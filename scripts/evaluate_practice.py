@@ -103,8 +103,13 @@ def run_trackeval(trackeval_root: Path, run_name: str, benchmark: str, split: st
     Raises:
         subprocess.CalledProcessError: Khi TrackEval thoát với mã khác 0.
     """
+    # Tiến trình con không thừa hưởng bản vá np.float của tiến trình cha, nên vá lại ở đây.
+    boot = (
+        "import numpy as np, runpy, sys; np.float = float; np.int = int; "
+        "sys.argv = sys.argv[1:]; runpy.run_path(sys.argv[0], run_name='__main__')"
+    )
     cmd = [
-        sys.executable,
+        sys.executable, "-c", boot,
         str(trackeval_root / "scripts" / "run_mot_challenge.py"),
         "--GT_FOLDER", str(trackeval_root / "data" / "gt" / "mot_challenge"),
         "--TRACKERS_FOLDER", str(trackeval_root / "data" / "trackers" / "mot_challenge"),
