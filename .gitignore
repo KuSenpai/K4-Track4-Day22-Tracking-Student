@@ -4,3 +4,6 @@ TrackEval/
 __pycache__/
 .ipynb_checkpoints/
 .pytest_cache/
+runs/sw/
+runs/thu_nhanh/
+*.mp4
